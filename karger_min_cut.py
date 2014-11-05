@@ -87,7 +87,7 @@ def karger_min_cut_single_run(graph):
             return False
     # - now filter the remaining edges
     crossing_edges = list(filter(endpoints_in_different_clusters, edges_list))
-    return clusters, crossing_edges
+    return ufs.clusters(), crossing_edges
 
 
 single_run = karger_min_cut_single_run
@@ -114,14 +114,14 @@ def karger_min_cut_multi_run(graph, times=None):
     """
     if times is None:
         n = graph.number_of_nodes()
-        times = n * (n - 1) * math.ceil(math.log(n)) / 2
+        times = math.ceil(n * (n - 1) * math.ceil(math.log(n)) / 2)
     min_size_of_cut = float('inf')
     min_result = None
     for i in range(times):
         result = karger_min_cut_single_run(graph)
         # result is the tuple:
-        # (left_part_of_cut, right_part_of_cut, list_of_crossing_edges)
-        size_of_cut = len(result[2])
+        # (clusters, list_of_crossing_edges)
+        size_of_cut = len(result[1])
         if size_of_cut < min_size_of_cut:
             min_result = result
     return min_result
