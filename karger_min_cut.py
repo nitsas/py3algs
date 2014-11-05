@@ -31,12 +31,17 @@ Date:
 
 import random
 import math
+import collections
 # modules I've written:
 import unionfind
 
 
-__all__ = ['karger_min_cut_single_run', 'single_run', 
+__all__ = ['CutStruct', 'karger_min_cut_single_run', 'single_run', 
            'karger_min_cut_multi_run', 'multi_run']
+
+
+CutStruct = collections.namedtuple('CutStruct', ['clusters',
+                                                 'crossing_edges'])
 
 
 def karger_min_cut_single_run(graph):
@@ -87,7 +92,7 @@ def karger_min_cut_single_run(graph):
             return False
     # - now filter the remaining edges
     crossing_edges = list(filter(endpoints_in_different_clusters, edges_list))
-    return ufs.clusters(), crossing_edges
+    return CutStruct(ufs.clusters(), crossing_edges)
 
 
 single_run = karger_min_cut_single_run
@@ -115,16 +120,16 @@ def karger_min_cut_multi_run(graph, times=None):
     if times is None:
         n = graph.number_of_nodes()
         times = math.ceil(n * (n - 1) * math.ceil(math.log(n)) / 2)
-    min_size_of_cut = float('inf')
-    min_result = None
+    min_cut_size = float('inf')
+    min_cut = None
     for i in range(times):
-        result = karger_min_cut_single_run(graph)
-        # result is the tuple:
-        # (clusters, list_of_crossing_edges)
-        size_of_cut = len(result[1])
-        if size_of_cut < min_size_of_cut:
-            min_result = result
-    return min_result
+        cut = karger_min_cut_single_run(graph)
+        # cut is the namedtuple:
+        # (clusters, crossing_edges)
+        cut_size = len(cut.crossing_edges)
+        if cut_size < min_cut_size:
+            min_cut = cut
+    return min_cut
 
 
 multi_run = karger_min_cut_multi_run
