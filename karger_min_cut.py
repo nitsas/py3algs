@@ -129,6 +129,7 @@ def karger_min_cut_multi_run(graph, times=None):
         cut_size = len(cut.crossing_edges)
         if cut_size < min_cut_size:
             min_cut = cut
+            min_cut_size = cut_size
     return min_cut
 
 
