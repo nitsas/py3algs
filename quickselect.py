@@ -37,16 +37,19 @@ def quickselect(list_, k, begin=None, end=None):
         begin = 0
     if end is None:
         end = len(list_)
+    # check if empty (sub)list
+    if begin == end:
+        raise ValueError("no elements in the given range!")
     # check for invalid range indices
-    if not 0 <= begin <= end <= len(list_):
-        raise ValueError("0 <= begin <= end <= len(list_) must hold")
+    if not 0 <= begin < end <= len(list_):
+        raise ValueError("0 <= begin < end <= len(list_) must hold")
     # check for invalid k
     if not 0 <= k < (end - begin):
         raise ValueError("0 <= k < (end - begin) must hold")
     # make a copy of the (sub)list, so that we don't mutate the original
     list_copy = list_[begin:end]
     # let the recursive helper do the actual work
-    return _quickselect(list_copy, k, 0, len(list_copy))
+    return _quickselect(list_copy, k, begin=0, end=len(list_copy))
 
 
 select = quickselect
@@ -67,16 +70,16 @@ def _quickselect(list_, k, begin, end):
     Search for and return the k-th smallest element in the sublist 
     list_[begin:end], k=0 being the min element.
     """
-    assert(begin < end)
-    assert(0 <= k < (end-begin))
+    assert(0 <= begin < end <= len(list_))
+    assert(0 <= k < (end - begin))
     if end == begin + 1:
         # i.e. only one element
         return list_[begin]
     #pivotIndex = random.randrange(begin, end)
     pivotIndex = begin
     # Partition the sublist (list_[begin:end]) into three parts, a left 
-    # sublist with elements less than or equal to the pivot, the pivot itself, 
-    # and a right sublist with elements greater than the pivot.
+    # sublist with elements less than or equal to the pivot, the pivot 
+    # itself, and a right sublist with elements greater than the pivot.
     pivotIndex = partition(list_, begin, end, pivotIndex)
     # The pivot should now be in its final sorted position in the sublist.
     if k == pivotIndex-begin:
@@ -89,7 +92,7 @@ def _quickselect(list_, k, begin, end):
         # The k'th smallest item of the original (sub)list, is the 
         # (pivotIndex - begin + 1)'th smallest item of the right (sub)sublist.
         new_k = k - (pivotIndex - begin + 1)
-        return _quickselect(list_, new_k, pivotIndex+1, end)
+        return _quickselect(list_, new_k, pivotIndex + 1, end)
 
 
 def partition(list_, begin, end, pivotIndex):
@@ -109,16 +112,16 @@ def partition(list_, begin, end, pivotIndex):
     """
     pivot = list_[pivotIndex]
     # move pivot to the end
-    list_[pivotIndex], list_[end-1] = list_[end-1], list_[pivotIndex]
+    list_[pivotIndex], list_[end - 1] = list_[end - 1], list_[pivotIndex]
     # storeIndex will point to the first element that is greater than or
     # equal to the pivot (initially points to the leftmost element)
     storeIndex = begin
-    for i in range(begin, end-1):
+    for i in range(begin, end - 1):
         if list_[i] < pivot:
             list_[i], list_[storeIndex] = list_[storeIndex], list_[i]
             storeIndex += 1
     # now everything before storeIndex is less than the pivot, and storeIndex
     # points to the first item that is greater than or equal to the pivot;
     # move pivot back to where storeIndex points
-    list_[storeIndex], list_[end-1] = list_[end-1], list_[storeIndex]
+    list_[storeIndex], list_[end - 1] = list_[end - 1], list_[storeIndex]
     return storeIndex
