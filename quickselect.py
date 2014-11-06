@@ -1,8 +1,16 @@
 """
-Select ith smallest element of a list using the quickselect algorithm.
+Select kth smallest element of a list using the quickselect algorithm.
 
-The input should be a list (or some other list-like container). Its elements
-must admit a total order denoted by a less-than operator.
+Author:
+  Christos Nitsas
+  (nitsas)
+  (chrisnitsas)
+
+Language:
+  Python 3(.4)
+
+Date:
+  March, 2014
 """
 
 
@@ -15,9 +23,13 @@ __all__ = ['select', 'quickselect', 'partition']
 
 def quickselect(list_, k):
     """
-    The quickselect algorithm. Uses the partition algorithm.
-    list_ is a list (unsorted)
-    we are searching for the k'th smallest element in the list
+    Select and return the kth smallest item of a list. (k >= 0)
+    
+    list_ -- A list of items that can be compared using the less than or 
+             equal (<=) operator.
+    k -- An integer; 0 <= k < len(list_) must hold.
+    
+    This doesn't mutate the original list.
     """
     assert(k >= 0)
     assert(k < len(list_))
@@ -29,14 +41,18 @@ select = quickselect
 
 def _quickselect(list_, begin, end, k):
     """
-    This function is called recursively to do the actual work.
-    list_ is a list
-    begin is an index
-    end is an index
-    k is a natural number
-    we search for the k-th smallest element in the sublist, searching
-    only between begin and end (i.e. list_[begin:end] - similar
-    to slice notation)
+    Select and return the kth smallest item of a sublist. (k >= 0) (helper)
+
+    list_ -- A list of items that can be compared using the less than or 
+             equal (<=) operator.
+    begin -- The index of the first of the items we care about.
+    end -- The index just past the last of the items we care about.
+    k -- An integer; 0 <= k < (end - begin) must hold.
+
+    This helper function is called recursively to do the actual work.
+    
+    Search for and return the k-th smallest element in the sublist 
+    list_[begin:end]. 
     """
     assert(begin < end)
     assert(0 <= k < (end-begin))
@@ -45,11 +61,10 @@ def _quickselect(list_, begin, end, k):
         return list_[begin]
     #pivotIndex = random.randrange(begin, end)
     pivotIndex = begin
+    # Partition the sublist (list_[begin:end]) into three parts, a left 
+    # sublist with elements less than or equal to the pivot, the pivot itself, 
+    # and a right sublist with elements greater than the pivot.
     pivotIndex = partition(list_, begin, end, pivotIndex)
-    # Partition the sublist (list_[begin:end]) into three parts,
-    # a left sublist with elements less than list_[pivotIndex], the
-    # element list_[pivotIndex], and a right sublist with elements
-    # greater than or equal to list_[pivotIndex].
     # The pivot should now be in its final sorted position in the sublist.
     if k == pivotIndex-begin:
         return list_[pivotIndex]
@@ -58,15 +73,25 @@ def _quickselect(list_, begin, end, k):
         return _quickselect(list_, begin, pivotIndex, k)
     else:
         # k > pivotIndex-begin
+        # The k'th smallest item of the original (sub)list, is the 
+        # (pivotIndex - begin + 1)'th smallest item of the right (sub)sublist.
         return _quickselect(list_, pivotIndex+1, end, k - (pivotIndex-begin+1))
 
 
 def partition(list_, begin, end, pivotIndex):
     """
+    Partition a sublist around a pivot and return the final pivot index.
+    
+    list_ -- A list of items that can be compared using the less than or 
+             equal (<=) operator.
+    begin -- The index of the first of the items we care about.
+    end -- The index just past the last of the items we care about.
+    pivotIndex -- the (initial) index of the pivot
+    
     Partition the sublist list_[begin:end] into three parts:
-    lseq - which contains all elements less than list_[pivot],
-    pivot - the element list_[pivotIndex], and
-    rseq - which contains all elements greater than or equal to pivot
+    - left,  which contains all items less or equal to the pivot,
+    - pivot, the pivot item itself, and
+    - right, which contains all items greater than or equal to the pivot
     """
     pivot = list_[pivotIndex]
     # move pivot to the end
