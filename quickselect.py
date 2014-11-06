@@ -15,44 +15,57 @@ Date:
 
 
 import random
-import copy
 
 
 __all__ = ['select', 'quickselect', 'partition']
 
 
-def quickselect(list_, k):
+def quickselect(list_, k, begin=None, end=None):
     """
-    Select and return the kth smallest item of a list. (k >= 0)
+    Select and return the kth smallest item of a sublist. (k >= 0)
     
     list_ -- A list of items that can be compared using the less than or 
              equal (<=) operator.
     k -- An integer; 0 <= k < len(list_) must hold.
+    begin -- The index of the first of the items we care about.
+    end -- The index just past the last of the items we care about.
     
     This doesn't mutate the original list.
     """
-    assert(k >= 0)
-    assert(k < len(list_))
-    return _quickselect(copy.copy(list_), 0, len(list_), k)
+    # default range indices
+    if begin is None:
+        begin = 0
+    if end is None:
+        end = len(list_)
+    # check for invalid range indices
+    if not 0 <= begin <= end <= len(list_):
+        raise ValueError("0 <= begin <= end <= len(list_) must hold")
+    # check for invalid k
+    if not 0 <= k < (end - begin):
+        raise ValueError("0 <= k < (end - begin) must hold")
+    # make a copy of the (sub)list, so that we don't mutate the original
+    list_copy = list_[begin:end]
+    # let the recursive helper do the actual work
+    return _quickselect(list_copy, k, 0, len(list_copy))
 
 
 select = quickselect
 
 
-def _quickselect(list_, begin, end, k):
+def _quickselect(list_, k, begin, end):
     """
     Select and return the kth smallest item of a sublist. (k >= 0) (helper)
 
     list_ -- A list of items that can be compared using the less than or 
              equal (<=) operator.
+    k -- An integer; 0 <= k < (end - begin) must hold.
     begin -- The index of the first of the items we care about.
     end -- The index just past the last of the items we care about.
-    k -- An integer; 0 <= k < (end - begin) must hold.
 
     This helper function is called recursively to do the actual work.
     
     Search for and return the k-th smallest element in the sublist 
-    list_[begin:end]. 
+    list_[begin:end], k=0 being the min element.
     """
     assert(begin < end)
     assert(0 <= k < (end-begin))
