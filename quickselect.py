@@ -83,12 +83,13 @@ def _quickselect(list_, k, begin, end):
         return list_[pivotIndex]
     elif k < pivotIndex-begin:
         # the k'th smallest element is in the left sublist
-        return _quickselect(list_, begin, pivotIndex, k)
+        return _quickselect(list_, k, begin, pivotIndex)
     else:
         # k > pivotIndex-begin
         # The k'th smallest item of the original (sub)list, is the 
         # (pivotIndex - begin + 1)'th smallest item of the right (sub)sublist.
-        return _quickselect(list_, pivotIndex+1, end, k - (pivotIndex-begin+1))
+        new_k = k - (pivotIndex - begin + 1)
+        return _quickselect(list_, new_k, pivotIndex+1, end)
 
 
 def partition(list_, begin, end, pivotIndex):
