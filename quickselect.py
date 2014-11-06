@@ -27,59 +27,59 @@ def quickselect(list_, k):
 select = quickselect
 
 
-def _quickselect(list_, left, right, k):
+def _quickselect(list_, begin, end, k):
     """
     This function is called recursively to do the actual work.
     list_ is a list
-    left is an index
-    right is an index
+    begin is an index
+    end is an index
     k is a natural number
     we search for the k-th smallest element in the sublist, searching
-    only between left and right (i.e. list_[left:right] - similar
+    only between begin and end (i.e. list_[begin:end] - similar
     to slice notation)
     """
-    assert(left < right)
-    assert(0 <= k < (right-left))
-    if right == left + 1:
+    assert(begin < end)
+    assert(0 <= k < (end-begin))
+    if end == begin + 1:
         # i.e. only one element
-        return list_[left]
-    #pivotIndex = random.randrange(left, right)
-    pivotIndex = left
-    pivotIndex = partition(list_, left, right, pivotIndex)
-    # Partition the sublist (list_[left:right]) into three parts,
+        return list_[begin]
+    #pivotIndex = random.randrange(begin, end)
+    pivotIndex = begin
+    pivotIndex = partition(list_, begin, end, pivotIndex)
+    # Partition the sublist (list_[begin:end]) into three parts,
     # a left sublist with elements less than list_[pivotIndex], the
     # element list_[pivotIndex], and a right sublist with elements
     # greater than or equal to list_[pivotIndex].
     # The pivot should now be in its final sorted position in the sublist.
-    if k == pivotIndex-left:
+    if k == pivotIndex-begin:
         return list_[pivotIndex]
-    elif k < pivotIndex-left:
+    elif k < pivotIndex-begin:
         # the k'th smallest element is in the left sublist
-        return _quickselect(list_, left, pivotIndex, k)
+        return _quickselect(list_, begin, pivotIndex, k)
     else:
-        # k > pivotIndex-left
-        return _quickselect(list_, pivotIndex+1, right, k - (pivotIndex-left+1))
+        # k > pivotIndex-begin
+        return _quickselect(list_, pivotIndex+1, end, k - (pivotIndex-begin+1))
 
 
-def partition(list_, left, right, pivotIndex):
+def partition(list_, begin, end, pivotIndex):
     """
-    Partition the sublist list_[left:right] into three parts:
+    Partition the sublist list_[begin:end] into three parts:
     lseq - which contains all elements less than list_[pivot],
     pivot - the element list_[pivotIndex], and
     rseq - which contains all elements greater than or equal to pivot
     """
     pivot = list_[pivotIndex]
     # move pivot to the end
-    list_[pivotIndex], list_[right-1] = list_[right-1], list_[pivotIndex]
+    list_[pivotIndex], list_[end-1] = list_[end-1], list_[pivotIndex]
     # storeIndex will point to the first element that is greater than or
     # equal to the pivot (initially points to the leftmost element)
-    storeIndex = left
-    for i in range(left, right-1):
+    storeIndex = begin
+    for i in range(begin, end-1):
         if list_[i] < pivot:
             list_[i], list_[storeIndex] = list_[storeIndex], list_[i]
             storeIndex += 1
     # now everything before storeIndex is less than the pivot, and storeIndex
     # points to the first item that is greater than or equal to the pivot;
     # move pivot back to where storeIndex points
-    list_[storeIndex], list_[right-1] = list_[right-1], list_[storeIndex]
+    list_[storeIndex], list_[end-1] = list_[end-1], list_[storeIndex]
     return storeIndex
