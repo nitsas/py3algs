@@ -39,8 +39,12 @@ def _add_supersource(graph):
     
     graph -- a networkx graph
     """
-    assert(not 'supersource' in graph)
-    ss = 'supersource'
+    ss = '_temp_supersource'
+    if ss in graph:
+        import time
+        ss = '_temp_supersource_' + time.asctime()
+        if ss in graph:
+            raise Exception('Failed to add temporary supersource.')
     graph.add_node(ss)
     for node in graph.nodes_iter():
         graph.add_edge(ss, node, cost=0)
