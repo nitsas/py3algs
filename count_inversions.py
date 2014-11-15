@@ -39,7 +39,7 @@ def count_inversions(sequence):
     We count inversions from the ascending order.
     This will piggyback on the mergesort divide and conquer algorithm.
     """
-    sorted_sequence, num_inversions = mergesort_and_count(sequence)
+    _, num_inversions = mergesort_and_count(sequence)
     return num_inversions
 
 
@@ -52,7 +52,7 @@ def mergesort_and_count(sequence):
     of inversions, and return a tuple with "merged" and "N".
     """
     if len(sequence) <= 1:
-        return (sequence, 0)
+        return (list(sequence), 0)
     left = sequence[:len(sequence)//2]
     right = sequence[len(sequence)//2:]
     return merge_and_count_inversions(mergesort_and_count(left), 
