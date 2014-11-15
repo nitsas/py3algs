@@ -36,6 +36,8 @@ def _add_supersource(graph):
     """
     This will add a new "supersource" node to the graph as well 
     as zero cost edges from the supersource to every other node.
+    
+    graph -- a networkx graph
     """
     assert(not 'supersource' in graph)
     ss = 'supersource'
@@ -48,10 +50,12 @@ def _add_supersource(graph):
 
 def _compute_node_weights(graph):
     """
-    This computes a weight for each node, such that reweighting each 
-    edge (u, v) using the formula: 
+    Compute a weight for each node, such that reweighting each edge (u, v) 
+    using the formula: 
     cost'(u, v) = cost(u, v) + weight(u) - weight(v)
     will result in non-negative edge costs.
+    
+    graph -- a networkx graph
     """
     # add a supersource
     ss = _add_supersource(graph)
@@ -67,16 +71,19 @@ def _compute_node_weights(graph):
 def _reweight_edges_using_node_weights(graph, node_weight, 
                                      weight_attr_name=None):
     """
-    This reweights each edge (u, v) using the formula:
+    Reweight each edge (u, v) using the formula:
     cost'[(u, v)] = cost[(u, v)] + node_weight[u] - node_weight[v]
     This will preserve shortest paths.
     
+    graph -- a networkx graph
+    node_weight -- a dictionary mapping nodes to weights
+    weight_attr_name -- the name of the edge attribute we want to 
+                        use as weights/costs (default: 'cost')
+    
     For suitable node weights, this will get us non-negative edge 
     weights.
-    
-    weight_attr_name is the name of the edge attribute we want to 
-    use as weights/costs - default: 'cost'
     """
+    # set name of edge weight attribute
     if weight_attr_name is None:
         weight = 'cost'
     else:
@@ -89,7 +96,9 @@ def _reweight_edges_using_node_weights(graph, node_weight,
 
 def johnsons_all_pairs_shortest_paths(graph_):
     """
-    Computes a shortest path for every pair of nodes in the graph.
+    Compute a shortest path for every pair of nodes in the graph.
+    
+    graph_ -- a networkx graph
     
     This will not mutate the graph; we work on a temporary copy.
     Will throw a NegativeCycleError exception if the graph contains a 
