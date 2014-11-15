@@ -76,10 +76,10 @@ def extended_gcd(a, b):
             t = -t
         return gcd, s, t
     
-    assert(a >= b >= 0)
+    #assert(a >= b >= 0)
     
     # we'll mutate a, b, remember them if you'll use the assertion below
-    orig_a, orig_b = a, b
+    #orig_a, orig_b = a, b
     
     # initialization
     old_s, s = 1, 0
@@ -91,7 +91,7 @@ def extended_gcd(a, b):
         r = a%b
         old_s, s = s, old_s - k*s
         old_t, t = t, old_t - k*t
-        assert(r == orig_a*s + orig_b*t)
+        #assert(r == orig_a*s + orig_b*t)
         a, b = b, r
     
     # when the current a was r, the current old_s and old_t were s and t
