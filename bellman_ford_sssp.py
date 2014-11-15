@@ -29,9 +29,8 @@ __all__ = ['solve', 'bellman_ford_shortest_paths', 'NegativeCycleError',
 
 class NegativeCycleError(Exception):
     """
-    Exception raised in bellman_ford_shortest_paths() if and only if 
-    the given graph contains a negative cycle (that is reachable from 
-    the source vertex).
+    Exception raised if and only if the given graph contains a negative 
+    cycle that is reachable from the source vertex.
     """
     def __init__(self, message=None):
         if message is None:
@@ -41,8 +40,14 @@ class NegativeCycleError(Exception):
 
 def _init(graph, source):
     """
-    Initialize all distances (except the source's) to infinity and 
-    all predecessors to None.
+    Initialize node distances and predecessors and return two dicts.
+    
+    Makes two dicts, one for node distances, and one for node predecessors,
+    and initializes all distances (except the source's) to infinity and all 
+    predecessors to None.
+    
+    graph -- a networkx graph
+    source -- the source node
     """
     dist, pred = dict(), dict()
     inf = float('inf')
@@ -55,11 +60,14 @@ def _init(graph, source):
 
 def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
     """
-    Solves the single source shortest paths problem using the 
-    Bellman-Ford algorithm.
+    Compute shortest paths from the source using the Bellman-Ford algorithm.
     
-    Returns a tuple of dictionaries (dist, pred) each with one entry 
-    for each node in the graph.
+    graph -- a networkx graph
+    source -- the source node
+    weight_attr_name -- the name of the edge attribute we'll use as a weight
+    
+    Return a tuple of dictionaries (dist, pred) each with one entry for each 
+    node in the graph.
     - dist contains a shortest path distance from the source
     - pred contains the predecessor in a shortest path from the source 
     
@@ -89,11 +97,17 @@ def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
 
 def has_negative_cycle(graph_):
     """
-    Returns True if the graph contains a negative cycle; 
-    False otherwise.
+    Returns True if the graph contains a negative cycle; False otherwise.
+    
+    graph_ -- a networkx graph
     
     We don't have to assume the graph is connected. This will detect 
     a negative cycle (if one exists) even if the graph is disconnected.
+    
+    Won't mutate the graph, operates on a copy.
+    
+    TODO:
+    Make this not copy the graph; but don't mutate the graph either.
     """
     graph = graph_.copy()
     # add a supersource
