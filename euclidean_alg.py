@@ -87,11 +87,11 @@ def extended_gcd(a, b):
     
     # main loop
     while b != 0:
-        k = a//b
-        r = a%b
-        old_s, s = s, old_s - k*s
-        old_t, t = t, old_t - k*t
-        #assert(r == orig_a*s + orig_b*t)
+        k = a // b
+        r = a % b
+        old_s, s = s, old_s - k * s
+        old_t, t = t, old_t - k * t
+        #assert(r == orig_a * s + orig_b * t)
         a, b = b, r
     
     # when the current a was r, the current old_s and old_t were s and t
