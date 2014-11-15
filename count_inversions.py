@@ -26,7 +26,7 @@ Date:
 """
 
 
-__all__ = ['count_inversions', 'count']
+__all__ = ['count_inversions', 'count', 'mergesort_and_count']
 
 
 def count_inversions(sequence):
