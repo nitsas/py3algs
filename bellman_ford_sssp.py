@@ -111,9 +111,16 @@ def has_negative_cycle(graph_):
     """
     graph = graph_.copy()
     # add a supersource
-    assert(not 'supersource' in graph)
-    ss = 'supersource'
+    ss = '_supersource'
+    if ss in graph:
+        # there's already a node called '_supersource', try appending the
+        # current date to the name
+        import time
+        ss = '_supersource_' + time.asctime()
+        if ss in graph:
+            raise Exception('Failed to add supersource.')
     graph.add_node(ss)
+    # add edges from the supersource to every other node
     for node in graph.nodes_iter():
         graph.add_edge(ss, node, cost=0)
     graph.remove_edge(ss, ss)
