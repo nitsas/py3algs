@@ -19,7 +19,7 @@ Date:
 import numbers
 
 
-__all__ = ['extended_gcd']
+__all__ = ['gcd', 'extended_gcd']
 
 
 def gcd(a, b):
@@ -30,12 +30,19 @@ def gcd(a, b):
     a -- an integer (isinstance(a, numbers.Integral) must hold)
     b -- an integer (isinstance(a, numbers.Integral) must hold)
     """
+    # input must be integers
     if not isinstance(a, numbers.Integral) or \
        not isinstance(b, numbers.Integral):
         raise TypeError("Can't find gcd of non-integral objects '" + \
                         a.__class__.__name__ + "' and '" + \
                         b.__class__.__name__ + "'")
-    raise NotImplementedError()
+    # we only need to solve the case where: a >= b >= 0
+    if not (a >= b >= 0):
+        a, b = max(abs(a), abs(b)), min(abs(a), abs(b))
+    # main loop
+    while b != 0:
+        a, b = b, a % b
+    return a
 
 
 def extended_gcd(a, b):
