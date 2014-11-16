@@ -20,7 +20,7 @@ import collections
 __all__ = ['Item', 'KnapsackSolverWithCachingAndStack', 'Solver']
 
 
-Item = collections.namedtuple('Item', ('value', 'weight'))
+Item = collections.namedtuple('Item', ('value', 'size'))
 
 
 class KnapsackSolverWithCachingAndStack:
@@ -37,7 +37,7 @@ class KnapsackSolverWithCachingAndStack:
         
         knapsack_size -- an integer; the size of the knapsack
         items -- a list of Item namedtuples
-        items[i].weight -- an integer; the i'th item's weight
+        items[i].size -- an integer; the i'th item's size
         items[i].value -- a number; the i'th item's value
         """
         self.knapsack_size = knapsack_size
@@ -71,7 +71,7 @@ class KnapsackSolverWithCachingAndStack:
         #   problem needs solved
         while len(stack) > 0:
             (num, ksize) = stack[-1]
-            if self.items[num - 1].weight > ksize:
+            if self.items[num - 1].size > ksize:
                 # item num-1 does not fit
                 try:
                     # retrieve subproblem result from the cache
@@ -85,7 +85,7 @@ class KnapsackSolverWithCachingAndStack:
                 # - one if we don't include item num-1 in the knapsack
                 # - one if we do include it
                 sub1 = (num - 1, ksize)
-                sub2 = (num - 1, ksize - self.items[num - 1].weight)
+                sub2 = (num - 1, ksize - self.items[num - 1].size)
                 try:
                     # retrieve 1st subproblem's result from the cache and 
                     # compute max value if we don't include item num-1
