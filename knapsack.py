@@ -42,14 +42,14 @@ class KnapsackSolverWithCachingAndStack:
         """
         self.knapsack_size = knapsack_size
         self.items = items
-        self.cache = dict()
+        self._cache = dict()
         # fill-in the cache with base cases' (subproblems') solutions
         for size in range(knapsack_size + 1):
             # if there are no items, the max value is 0
-            self.cache[(0, size)] = 0
-        for num in range(len(items) + 1):
+            self._cache[(0, size)] = 0
+        for end in range(len(items) + 1):
             # if the knapsack's size is 0 no items fit, the max value is 0
-            self.cache[(num, 0)] = 0
+            self._cache[(end, 0)] = 0
     
     def solve(self):
         """
@@ -70,43 +70,45 @@ class KnapsackSolverWithCachingAndStack:
         # - it will only pass through the subproblems that the initial 
         #   problem needs solved
         while len(stack) > 0:
-            (num, ksize) = stack[-1]
-            if self.items[num - 1].size > ksize:
-                # item num-1 does not fit
+            (end, ksize) = stack[-1]
+            # this is the subproblem where we have only items self.items[:end]
+            # and the knapsack size is ksize
+            if self.items[end - 1].size > ksize:
+                # item end-1 does not fit
                 try:
                     # retrieve subproblem result from the cache
-                    self.cache[(num, ksize)] = self.cache[(num - 1, ksize)]
+                    self._cache[(end, ksize)] = self._cache[(end - 1, ksize)]
                 except KeyError:
                     # subproblem hasn't been solved yet, put it on the stack
-                    stack.append((num - 1, ksize))
+                    stack.append((end - 1, ksize))
                     continue
             else:
-                # item num-1 fits; we get two subproblems:
-                # - one if we don't include item num-1 in the knapsack
+                # item end-1 fits; we get two subproblems:
+                # - one if we don't include item end-1 in the knapsack
                 # - one if we do include it
-                sub1 = (num - 1, ksize)
-                sub2 = (num - 1, ksize - self.items[num - 1].size)
+                sub1 = (end - 1, ksize)
+                sub2 = (end - 1, ksize - self.items[end - 1].size)
                 try:
                     # retrieve 1st subproblem's result from the cache and 
-                    # compute max value if we don't include item num-1
-                    val1 = self.cache[sub1]
+                    # compute max value if we don't include item end-1
+                    val1 = self._cache[sub1]
                 except KeyError:
                     # subproblem hasn't been solved yet, put it on the stack
                     stack.append(sub1)
                     continue
                 try:
                     # retrieve 2nd subproblem's result from the cache and
-                    # compute max value if we do include item num-1
-                    val2 = self.items[num - 1].value + self.cache[sub2]
+                    # compute max value if we do include item end-1
+                    val2 = self.items[end - 1].value + self._cache[sub2]
                 except KeyError:
                     # subproblem hasn't been solved yet, put it on the stack
                     stack.append(sub2)
                     continue
-                # is it better to include item num-1 or not?
-                self.cache[(num, ksize)] = max(val1, val2)
+                # is it better to include item end-1 or not?
+                self._cache[(end, ksize)] = max(val1, val2)
             # done with this subproblem
             stack.pop()
-        return self.cache[(initial_query)]
+        return self._cache[(initial_query)]
 
 
 Solver = KnapsackSolverWithCachingAndStack
