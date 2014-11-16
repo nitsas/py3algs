@@ -27,6 +27,9 @@ __all__ = ['solve', 'bellman_ford_shortest_paths', 'NegativeCycleError',
            'has_negative_cycle']
 
 
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
+
+
 class NegativeCycleError(Exception):
     """
     Exception raised if and only if the given graph contains a negative 
@@ -66,8 +69,8 @@ def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
     source -- the source node
     weight_attr_name -- the name of the edge attribute we'll use as a weight
     
-    Return a tuple of dictionaries (dist, pred) each with one entry for each 
-    node in the graph.
+    Return a namedtuple of two dictionaries (dist, pred), each with one entry 
+    for each node in the graph.
     - dist contains a shortest path distance from the source
     - pred contains the predecessor in a shortest path from the source 
     
@@ -92,7 +95,7 @@ def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
     for u, v, edge_attrs in graph.edges_iter(data=True):
         if dist[u] + edge_attrs[weight] < dist[v]:
             raise(NegativeCycleError)
-    return dist, pred
+    return DistAndPred(dist, pred)
 
 
 def has_negative_cycle(graph_):
