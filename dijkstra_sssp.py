@@ -31,6 +31,9 @@ import dict_heap
 __all__ = ['solve', 'dijkstra_shortest_paths']
 
 
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
+
+
 def _init(graph, source):
     """
     Initialize nodes' distances and predecessors and return two dicts.
@@ -93,7 +96,7 @@ def dijkstra_shortest_paths(graph, source, weight_attr_name=None,
                 dist[v] = dist[u] + edge_attrs[weight]
                 heap.decrease_key(v, dist[v])
                 pred[v] = u
-    return dist, pred
+    return DistAndPred(dist, pred)
 
 
 solve = dijkstra_shortest_paths
