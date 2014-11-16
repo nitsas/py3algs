@@ -17,17 +17,17 @@ Date:
 import collections
 
 
-__all__ = ['Item', 'KnapsackSolverWithCachingAndQueue', 'Solver']
+__all__ = ['Item', 'KnapsackSolverWithCachingAndStack', 'Solver']
 
 
 Item = collections.namedtuple('Item', ('value', 'weight'))
 
 
-class KnapsackSolverWithCachingAndQueue:
+class KnapsackSolverWithCachingAndStack:
     """
-    Solve the Knapsack problem, using memoization and a queue.
+    Solve the Knapsack problem, using memoization and a stack.
     
-    Uses dynamic programming, memoization (aka caching) and a queue (instead 
+    Uses dynamic programming, memoization (aka caching) and a stack (instead 
     of recursion).
     """
     
@@ -56,29 +56,29 @@ class KnapsackSolverWithCachingAndQueue:
         Solve the problem.
         
         Uses a cache (i.e. memoization) to remember subproblem solutions. 
-        Also uses a queue (of subproblems to be solved) instead of recursing 
+        Also uses a stack (of subproblems to be solved) instead of recursing 
         on the subproblems, so that we avoid running into the recursion depth 
         limit.
         """
-        # a queue of queries (aka subproblems to be solved)
-        queue = []
+        # a stack of queries (aka subproblems to be solved)
+        stack = []
         initial_query = (len(self.items), self.knapsack_size)
-        queue.append(initial_query)
+        stack.append(initial_query)
         # Run as long as there are subproblems that need to be solved.
         # - this might not pass through all possible subproblems; in fact, 
         #   we're counting on it
         # - it will only pass through the subproblems that the initial 
         #   problem needs solved
-        while len(queue) > 0:
-            (num, ksize) = queue[-1]
+        while len(stack) > 0:
+            (num, ksize) = stack[-1]
             if self.items[num - 1].weight > ksize:
                 # item num-1 does not fit
                 try:
                     # retrieve subproblem result from the cache
                     self.cache[(num, ksize)] = self.cache[(num - 1, ksize)]
                 except KeyError:
-                    # subproblem hasn't been solved yet, queue it
-                    queue.append((num - 1, ksize))
+                    # subproblem hasn't been solved yet, put it on the stack
+                    stack.append((num - 1, ksize))
                     continue
             else:
                 # item num-1 fits; we get two subproblems:
@@ -91,22 +91,22 @@ class KnapsackSolverWithCachingAndQueue:
                     # compute max value if we don't include item num-1
                     val1 = self.cache[sub1]
                 except KeyError:
-                    # subproblem hasn't been solved yet, queue it
-                    queue.append(sub1)
+                    # subproblem hasn't been solved yet, put it on the stack
+                    stack.append(sub1)
                     continue
                 try:
                     # retrieve 2nd subproblem's result from the cache and
                     # compute max value if we do include item num-1
                     val2 = self.items[num - 1].value + self.cache[sub2]
                 except KeyError:
-                    # subproblem hasn't been solved yet, queue it
-                    queue.append(sub2)
+                    # subproblem hasn't been solved yet, put it on the stack
+                    stack.append(sub2)
                     continue
                 # is it better to include item num-1 or not?
                 self.cache[(num, ksize)] = max(val1, val2)
             # done with this subproblem
-            queue.pop()
+            stack.pop()
         return self.cache[(initial_query)]
 
 
-Solver = KnapsackSolverRecursiveWithCaching
+Solver = KnapsackSolverWithCachingAndStack
