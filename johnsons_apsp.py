@@ -29,6 +29,9 @@ import dijkstra_sssp
 __all__ = ['solve', 'johnsons_all_pairs_shortest_paths', 'NegativeCycleError']
 
 
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
+
+
 NegativeCycleError = bellman_ford_sssp.NegativeCycleError
 
 
@@ -104,6 +107,12 @@ def johnsons_all_pairs_shortest_paths(graph_):
     
     graph_ -- a networkx graph
     
+    Return a namedtuple of two dictionaries (dist, pred). Both dist and pred
+    map each node (source) in the graph to another dict, which in turn maps
+    nodes (targets) to distances and predecessors respectively.
+    - dist[u][v] contains a shortest path distance from u to v
+    - pred[u][v] contains the predecessor of v in a shortest path from u
+    
     This will not mutate the graph; we work on a temporary copy.
     Will throw a NegativeCycleError exception if the graph contains a 
     negative cycle.
@@ -130,7 +139,7 @@ def johnsons_all_pairs_shortest_paths(graph_):
         for v in graph.nodes_iter():
             dist[u][v] = dist[u][v] - node_weight[u] + node_weight[v]
     # return all pairs shortest paths distances and predecessors
-    return dist, pred
+    return DistAndPred(dist, pred)
 
 
 solve = johnsons_all_pairs_shortest_paths
