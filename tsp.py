@@ -67,8 +67,8 @@ class TspSolverDynamicProgrammingWithMemoization:
         weight -- name of edge attribute we'll use as edge weights; 
                   default: 'cost'
         """
-        assert(query.num_edges == len(query.to_visit) + 1)
-        assert(query.num_edges >= 1)
+        #assert(query.num_edges == len(query.to_visit) + 1)
+        #assert(query.num_edges >= 1)
         try:
             return self._cache[query]
         except KeyError:
@@ -84,7 +84,7 @@ class TspSolverDynamicProgrammingWithMemoization:
                 if subtour.cost + last_hop_cost < min_cost:
                     min_cost = subtour.cost + last_hop_cost
                     best_subtour = subtour
-            assert(best_subtour is not None)
+            #assert(best_subtour is not None)
             stops = best_subtour.stops + (query.target,)
             tour = Tour(min_cost, stops)
             self._cache[query] = tour
