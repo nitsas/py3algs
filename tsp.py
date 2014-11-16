@@ -27,6 +27,9 @@ Tour = collections.namedtuple('Tour', ('cost', 'stops'))
 
 
 # a TSP subproblem
+# to_visit -- a list containing the vertices we have to visit
+# target -- the target vertex (after to_visit)
+# num_edges -- the number of edges we must use
 Query = collections.namedtuple('Query', ('to_visit', 'target', 'num_edges'))
 
 
@@ -39,30 +42,35 @@ def _subqueries(query):
 
 class TspSolverDynamicProgrammingWithMemoization:
     """
-    Solves the Travelling Salesman Problem a given graph.
+    Solve the Travelling Salesman Problem, given a graph.
     
     We use a dynamic programming approach with memoization.
     
     We expect a networkx.Graph type graph.
     """
     def __init__(self, graph):
-        """Initialize the problem with the given underlying graph."""
+        """
+        Initialize the problem with the given underlying graph.
+        
+        graph -- a networkx graph
+        """
         self.graph = graph
-        self.cache = dict()
+        self._cache = dict()
         
     def _solve_subproblem(self, query, weight):
         """
-        Solves the given subproblem.
+        Solve the given subproblem.
         
-        Remember:
-        query.to_visit contains the vertices we have to visit
-        query.target contains the target vertex (after to_visit)
-        query.num_edges is the number of edges we must use
+        query.to_visit -- list containing the vertices we have to visit
+        query.target -- the target vertex (after to_visit)
+        query.num_edges -- the number of edges we must use
+        weight -- name of edge attribute we'll use as edge weights; 
+                  default: 'cost'
         """
         assert(query.num_edges == len(query.to_visit) + 1)
         assert(query.num_edges >= 1)
         try:
-            return self.cache[query]
+            return self._cache[query]
         except KeyError:
             min_cost = float('inf')
             best_subtour = None
@@ -79,13 +87,15 @@ class TspSolverDynamicProgrammingWithMemoization:
             assert(best_subtour is not None)
             stops = best_subtour.stops + (query.target,)
             tour = Tour(min_cost, stops)
-            self.cache[query] = tour
+            self._cache[query] = tour
             return tour
     
     def solve(self, weight_attr_name=None):
         """
-        Solves the problem - returns a cheapest tour through all 
-        the graph's vertices.
+        Solve the problem, and return a cheapest tour. 
+        
+        weight_attr_name -- name of edge attribute we'll use as edge weights;
+                            default: 'cost'
         """
         # which edge attribute will we use as the edge weight?
         if weight_attr_name is None:
@@ -105,7 +115,7 @@ class TspSolverDynamicProgrammingWithMemoization:
         for u in rest:
             cost_su = self.graph[s][u][weight]
             query = Query(tuple(), u, 1)
-            self.cache[query] = Tour(cost_su, (s, u))
+            self._cache[query] = Tour(cost_su, (s, u))
         # make the initial query and insert it in the query queue
         initial_query = Query(rest, s, self.graph.number_of_nodes())
         tour = self._solve_subproblem(initial_query, weight)
