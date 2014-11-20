@@ -10,12 +10,12 @@ import networkx as nx
 import dijkstra_sssp
 
 
-class DijkstraSsspOnSmallRandomUndirectedGraph(unittest.TestCase):
+class DijkstraSsspOnSmallRandomDirectedGraph(unittest.TestCase):
     """
-    Test dijkstra_sssp against networkx's dijkstra on a small graph.
+    Test dijkstra_sssp against networkx's dijkstra on a small directed graph.
     
-    Will test against networkx.single_source_dijkstra_path_length on an 
-    undirected networkx graph created using networkx.gnm_random_graph with
+    Will test against networkx.single_source_dijkstra_path_length on a 
+    directed networkx graph created using networkx.gnm_random_graph with
     the same seed every time. The edge weights are drawn using 
     random.randint(0, 99), again with the same seed every time.
     """
@@ -27,7 +27,8 @@ class DijkstraSsspOnSmallRandomUndirectedGraph(unittest.TestCase):
         # create the graph 
         # (we use the same seed every time so we get the same graph)
         # the graph will be connected, we checked
-        self.graph = nx.gnm_random_graph(num_nodes, num_edges, seed=seed)
+        self.graph = nx.gnm_random_graph(num_nodes, num_edges, seed=seed,
+                                         directed=True)
         # assign edge weights
         # (again we use a seed so we get the same weights every time)
         random.seed(seed)
