@@ -64,8 +64,8 @@ class TspSolverDynamicProgrammingWithMemoization:
         query.to_visit -- list containing the vertices we have to visit
         query.target -- the target vertex (after to_visit)
         query.num_edges -- the number of edges we must use
-        weight -- name of edge attribute we'll use as edge weights; 
-                  default: 'cost'
+        weight -- name of the edge attribute we'll use as edge weights; 
+                  (default: 'weight')
         """
         #assert(query.num_edges == len(query.to_visit) + 1)
         #assert(query.num_edges >= 1)
@@ -90,18 +90,13 @@ class TspSolverDynamicProgrammingWithMemoization:
             self._cache[query] = tour
             return tour
     
-    def solve(self, weight_attr_name=None):
+    def solve(self, weight='weight'):
         """
         Solve the problem, and return a cheapest tour. 
         
-        weight_attr_name -- name of edge attribute we'll use as edge weights;
-                            default: 'cost'
+        weight -- name of edge attribute we'll use as edge weights;
+                  (default: 'weight')
         """
-        # which edge attribute will we use as the edge weight?
-        if weight_attr_name is None:
-            weight = 'cost'
-        else:
-            weight = weight_attr_name
         # take care of the empty graph plus single node graphs:
         if self.graph.number_of_nodes() <= 1:
             # return the empty tour
