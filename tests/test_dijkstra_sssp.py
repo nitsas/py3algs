@@ -22,7 +22,7 @@ def make_graph(num_nodes, num_edges, seed=None, directed=True):
         edge_attrs['weight'] = random.randint(0, 99)
     return graph
     
-class DijkstraSsspOnSmallDirectedStronglyConnectedGraph(unittest.TestCase):
+class DijkstraSsspOnDirectedStronglyConnectedGraphTestCase(unittest.TestCase):
     """
     Test dijkstra_sssp against networkx's dijkstra on a small directed
     strongly connectedgraph.
@@ -58,7 +58,7 @@ class DijkstraSsspOnSmallDirectedStronglyConnectedGraph(unittest.TestCase):
                 self.assertEqual(dist[node], inf)
 
 
-class DijkstraSsspOnUndirectedNotConnectedGraph(unittest.TestCase):
+class DijkstraSsspOnUndirectedNotConnectedGraphTestCase(unittest.TestCase):
     """
     Test dijkstra_sssp against networkx's dijkstra on an undirected and not
     connected graph. 
