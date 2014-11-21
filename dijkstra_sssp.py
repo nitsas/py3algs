@@ -55,15 +55,17 @@ def _init(graph, source):
     return dist, pred
 
 
-def dijkstra_shortest_paths(graph, source, weight_attr_name=None, 
-                            heap_type=None):
+def dijkstra_shortest_paths(graph, source, weight='weight', 
+                            heap_type=dict_heap.DictHeap):
     """
     Compute shortest paths from the source using Dijkstra's algorithm.
     
     graph -- a networkx graph
     souce -- the source node
-    weight_attr_name -- the name of the edge attribute we'll use as a weight
-    heap_type -- the type we'll use as a heap, default dict_heap (for now)
+    weight -- the name of the edge attribute we'll use as a weight 
+              (default: 'weight')
+    heap_type -- the type we'll use as a heap 
+                 (default: dict_heap.DictHeap, for now)
     
     Careful: 
     All edge weights must be non-negative, for Dijkstra's algorithm to work 
@@ -74,14 +76,6 @@ def dijkstra_shortest_paths(graph, source, weight_attr_name=None,
     - dist contains a shortest path distance from the source
     - pred contains the predecessor in a shortest path from the source 
     """
-    # which of the edges' attributes is going to be the "weight"?
-    if weight_attr_name is None:
-        weight = 'cost'
-    else:
-        weight = weight_attr_name
-    # what type of heap will we use?
-    if heap_type is None:
-        heap_type = dict_heap.DictHeap
     # initialize distances and predecessors
     dist, pred = _init(graph, source)
     # insert all nodes into the heap
