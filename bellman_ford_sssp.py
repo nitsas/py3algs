@@ -94,11 +94,13 @@ def bellman_ford_shortest_paths(graph, source, weight='weight'):
     return DistAndPred(dist, pred)
 
 
-def has_negative_cycle(graph_):
+def has_negative_cycle(graph_, weight='weight'):
     """
     Returns True if the graph contains a negative cycle; False otherwise.
     
     graph_ -- a networkx graph
+    weight -- the name of the edge attribute we'll use as edge weights
+              (default: 'weight')
     
     We don't have to assume the graph is connected. This will detect 
     a negative cycle (if one exists) even if the graph is disconnected.
@@ -121,11 +123,11 @@ def has_negative_cycle(graph_):
     graph.add_node(ss)
     # add edges from the supersource to every other node
     for node in graph.nodes_iter():
-        graph.add_edge(ss, node, cost=0)
+        graph.add_edge(ss, node, {weight: 0})
     graph.remove_edge(ss, ss)
     # run Bellman-Ford on the new graph starting at the supersource
     try:
-        bellman_ford_shortest_paths(graph, ss)
+        bellman_ford_shortest_paths(graph, ss, weight=weight)
     except NegativeCycleError:
         return True
     return False
