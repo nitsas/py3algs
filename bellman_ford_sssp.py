@@ -61,13 +61,14 @@ def _init(graph, source):
     return dist, pred
 
 
-def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
+def bellman_ford_shortest_paths(graph, source, weight='weight'):
     """
     Compute shortest paths from the source using the Bellman-Ford algorithm.
     
     graph -- a networkx graph
     source -- the source node
-    weight_attr_name -- the name of the edge attribute we'll use as a weight
+    weight -- the name of the edge attribute we'll use as a weight 
+              (default: 'weight')
     
     Return a namedtuple of two dictionaries (dist, pred), each with one entry 
     for each node in the graph.
@@ -77,11 +78,6 @@ def bellman_ford_shortest_paths(graph, source, weight_attr_name=None):
     If the graph contains a negative cycle that is reachable from the 
     source vertex, we'll get a NegativeCycleError exception.
     """
-    # which of the edges' attributes is going to be the "weight"
-    if weight_attr_name is None:
-        weight = 'cost'
-    else:
-        weight = weight_attr_name
     # initialize distances and predecessors
     dist, pred = _init(graph, source)
     # main loop
