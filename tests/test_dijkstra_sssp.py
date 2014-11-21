@@ -47,8 +47,15 @@ class DijkstraSsspOnSmallDirectedStronglyConnectedGraph(unittest.TestCase):
         dist, _ = dijkstra_sssp.solve(self.graph, self.source, weight='weight')
         nx_dist = nx.single_source_dijkstra_path_length(self.graph,
                                             self.source, weight='weight')
+        inf = float('inf')
         for node in self.graph.nodes_iter():
-            self.assertEqual(dist[node], nx_dist[node])
+            if dist[node] != inf:
+                # node was reachable
+                self.assertEqual(dist[node], nx_dist[node])
+            else:
+                # node was unreachable
+                self.assertTrue(node not in nx_dist)
+                self.assertEqual(dist[node], inf)
 
 
 class DijkstraSsspOnUndirectedNotConnectedGraph(unittest.TestCase):
