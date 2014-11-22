@@ -70,7 +70,8 @@ def parse_args():
 def main(args):
     experiment = Experiment(args.num_nodes, args.num_edges, args.seed)
     locals_ = {'experiment': experiment}
-    cProfile.runctx('experiment.run()', globals={}, locals=locals_)
+    cProfile.runctx('experiment.run()', globals={}, locals=locals_,
+                    sort='cumtime')
     return 0
 
 
