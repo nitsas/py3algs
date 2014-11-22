@@ -40,16 +40,19 @@ def _init(graph):
     
     graph -- a networkx graph
     
-    Create two dicts, called dist and pred, mapping nodes to distances and
-    predecessors respectively, initialize all distances to infinity and all 
-    predecessors to None, and return the tuple (dist, pred).
+    Create three dicts, called dist, pred and finalized, mapping nodes to 
+    distances, predecessors, and whether or not their distances are final
+    respectively, initialize all distances to infinity, all predecessors to 
+    None, all nodes as not finalized, and return the tuple:
+    (dist, pred, finalized)
     """
-    dist, pred = dict(), dict()
+    dist, pred, finalized = dict(), dict(), dict()
     inf = float('inf')
     for node in graph.nodes_iter():
         dist[node] = inf
         pred[node] = None
-    return dist, pred
+        finalized[node] = False
+    return dist, pred, finalized
 
 
 def dijkstra_shortest_paths(graph, source, weight='weight', 
@@ -74,19 +77,23 @@ def dijkstra_shortest_paths(graph, source, weight='weight',
     - pred contains the predecessor in a shortest path from the source 
     """
     # initialize distances and predecessors
-    dist, pred = _init(graph)
+    dist, pred, finalized = _init(graph)
     dist[source] = 0
     # initialize the heap
     heap = heap_type()
     heap.insert((dist[source], source))
     # main loop
-    while len(heap) > 0:
+    num_finalized = 0
+    while num_finalized < graph.number_of_nodes() and len(heap) > 0:
         # pop the next candidate for finalization
-        entry_dist_u, u = heap.pop()
-        if entry_dist_u > dist[u]:
-            # this is an old entry; u's dist has been further lowered since
-            # this was inserted in the heap; ignore this
+        _, u = heap.pop()
+        if finalized[u]:
+            # u has already been finalized; this is an old entry with greater 
+            # dist for u; ignore it
             continue
+        # u's dist won't get any lower; finalize it
+        finalized[u] = True
+        num_finalized += 1
         # check if u's neighbors' dist is lower if we pass through u
         for _, v, edge_attrs in graph.edges(u, data=True):
             if dist[u] + edge_attrs[weight] < dist[v]:
