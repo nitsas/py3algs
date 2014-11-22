@@ -25,7 +25,7 @@ Date:
 
 import collections
 # Modules I've written:
-import dict_heap
+import binary_heap
 
 
 __all__ = ['solve', 'dijkstra_shortest_paths']
@@ -34,29 +34,26 @@ __all__ = ['solve', 'dijkstra_shortest_paths']
 DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
 
 
-def _init(graph, source):
+def _init(graph):
     """
     Initialize nodes' distances and predecessors and return two dicts.
     
     graph -- a networkx graph
-    source -- the source node
     
     Create two dicts, called dist and pred, mapping nodes to distances and
-    predecessors respectively, initialize all distances (except the source's) 
-    to infinity and all predecessors to None, and return the tuple 
-    (dist, pred).
+    predecessors respectively, initialize all distances to infinity and all 
+    predecessors to None, and return the tuple (dist, pred).
     """
     dist, pred = dict(), dict()
     inf = float('inf')
     for node in graph.nodes_iter():
         dist[node] = inf
         pred[node] = None
-    dist[source] = 0
     return dist, pred
 
 
 def dijkstra_shortest_paths(graph, source, weight='weight', 
-                            heap_type=dict_heap.DictHeap):
+                            heap_type=binary_heap.BinaryHeap):
     """
     Compute shortest paths from the source using Dijkstra's algorithm.
     
@@ -65,7 +62,7 @@ def dijkstra_shortest_paths(graph, source, weight='weight',
     weight -- the name of the edge attribute we'll use as a weight 
               (default: 'weight')
     heap_type -- the type we'll use as a heap 
-                 (default: dict_heap.DictHeap, for now)
+                 (default: binary_heap.BinaryHeap, for now)
     
     Careful: 
     All edge weights must be non-negative, for Dijkstra's algorithm to work 
@@ -77,18 +74,24 @@ def dijkstra_shortest_paths(graph, source, weight='weight',
     - pred contains the predecessor in a shortest path from the source 
     """
     # initialize distances and predecessors
-    dist, pred = _init(graph, source)
-    # insert all nodes into the heap
+    dist, pred = _init(graph)
+    dist[source] = 0
+    # initialize the heap
     heap = heap_type()
-    for node in graph.nodes_iter():
-        heap.insert(node, dist[node])
+    heap.insert((dist[source], source))
     # main loop
     while len(heap) > 0:
-        u = heap.pop()
+        # pop the next candidate for finalization
+        entry_dist_u, u = heap.pop()
+        if entry_dist_u > dist[u]:
+            # this is an old entry; u's dist has been further lowered since
+            # this was inserted in the heap; ignore this
+            continue
+        # check if u's neighbors' dist is lower if we pass through u
         for _, v, edge_attrs in graph.edges(u, data=True):
             if dist[u] + edge_attrs[weight] < dist[v]:
                 dist[v] = dist[u] + edge_attrs[weight]
-                heap.decrease_key(v, dist[v])
+                heap.insert((dist[v], v))
                 pred[v] = u
     return DistAndPred(dist, pred)
 
