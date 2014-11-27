@@ -58,9 +58,11 @@ def bisect(list_, x, begin=0, end=None):
             end = mid
         else:
             begin = mid + 1
-    # we are down to a search range of one item 
-    # begin is the index of that single item; end is the next index
-    if x <= list_[begin]:
+    # we are down to a search range of zero or one items; either:
+    # - begin == end, which can happen if we search for an item that's bigger
+    #   than every item in the list, or
+    # - begin is the index of the only left item; end is the next index
+    if begin == end or x <= list_[begin]:
         return begin
     else:
         return end
