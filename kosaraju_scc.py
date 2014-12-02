@@ -101,7 +101,8 @@ class SccFinder:
                     stack.append(StackCommandAppendNodeToFinishQueue(v))
                     # add "children" on top of the stack, to be examined
                     for w in self.graph.predecessors_iter(v):
-                        stack.append(w)
+                        if not self.marked[w]:
+                            stack.append(w)
     
     def _dfs_carve_out_scc(self, source):
         """
