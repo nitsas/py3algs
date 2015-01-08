@@ -33,7 +33,7 @@ import random
 import math
 import collections
 # modules I've written:
-from ..datastructs import unionfind
+from ..datastructs import union_find
 
 
 __all__ = ['CutStruct', 'karger_min_cut_single_run', 'single_run', 
@@ -63,7 +63,7 @@ def karger_min_cut_single_run(graph):
     # following code works
     #
     # initialize a union-find structure with the graph's nodes
-    ufs = unionfind.UnionFindStructure(graph.nodes_iter())
+    ufs = union_find.UnionFindStructure(graph.nodes_iter())
     # Make a shuffled list of all the edges. Instead of picking a random edge 
     # at each iteration, we will be (reverse) iterating through the list of
     # shuffled edges.
