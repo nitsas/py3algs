@@ -22,8 +22,8 @@ Date:
 
 import collections
 # Modules I've written:
-import bellman_ford_sssp
-import dijkstra_sssp
+from . import bellman_ford_sssp
+from . import dijkstra_sssp
 
 
 __all__ = ['solve', 'johnsons_all_pairs_shortest_paths', 'NegativeCycleError']

@@ -21,7 +21,7 @@ a * x + b * y = c
 import sys
 import numbers
 # modules I've written:
-import euclidean_alg
+from . import euclidean_alg
 
 
 __all__ = ['solve']

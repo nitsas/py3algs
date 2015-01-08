@@ -21,7 +21,7 @@ Date:
 
 import sys
 # modules I've implemented
-import binary_heap
+from . import binary_heap
 
 
 __all__ = ['MedianMaintainer', 'EvenChoice']

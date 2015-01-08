@@ -25,7 +25,7 @@ Date:
 
 import collections
 # Modules I've written:
-import binary_heap
+from ..datastructs import binary_heap
 
 
 __all__ = ['solve', 'dijkstra_shortest_paths']

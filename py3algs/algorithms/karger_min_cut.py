@@ -33,7 +33,7 @@ import random
 import math
 import collections
 # modules I've written:
-import unionfind
+from ..datastructs import unionfind
 
 
 __all__ = ['CutStruct', 'karger_min_cut_single_run', 'single_run', 
