@@ -13,6 +13,9 @@ July, 2014
 """
 
 
+__all__ = ['UnionFind', 'UnionFindSimpleImpl']
+
+
 class UnionFindSimpleImpl:
     """
     A simple Union-Find data structure implementation.
