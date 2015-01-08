@@ -37,7 +37,7 @@ class UnionFindSimpleImpl:
         Return the cluster (i.e. the cluster's leader) that the given item 
         belongs to.
         
-        Equivalent to UnionFindStructure.find().
+        Equivalent to UnionFind.find().
         """
         return self._leader[item]
     
@@ -47,7 +47,7 @@ class UnionFindSimpleImpl:
         Return the cluster (i.e. the cluster's leader) that the given item 
         belongs to.
         
-        Equivalent to UnionFindStructure.__getitem__().
+        Equivalent to UnionFind.__getitem__().
         """
         return self[item]
     
@@ -121,7 +121,7 @@ class UnionFindUnionByRankAndPathCompression:
         Return the cluster (i.e. the cluster's leader) that the given item 
         belongs to.
         
-        Equivalent to UnionFindStructure.find().
+        Equivalent to UnionFind.find().
         """
         raise(NotImplementedError)
     
@@ -131,7 +131,7 @@ class UnionFindUnionByRankAndPathCompression:
         Return the cluster (i.e. the cluster's leader) that the given item 
         belongs to.
         
-        Equivalent to UnionFindStructure.__getitem__().
+        Equivalent to UnionFind.__getitem__().
         """
         raise(NotImplementedError)
     
@@ -176,7 +176,7 @@ class UnionFindUnionByRankAndPathCompression:
 _default_impl = UnionFindSimpleImpl
 
 
-class UnionFindStructure:
+class UnionFind:
     """
     A Union-Find data structure interface.
     
@@ -191,5 +191,3 @@ class UnionFindStructure:
     
     def __getattr__(self, name):
         return getattr(self._impl, name)
-
-
