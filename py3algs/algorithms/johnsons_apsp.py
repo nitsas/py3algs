@@ -26,13 +26,14 @@ from . import bellman_ford_sssp
 from . import dijkstra_sssp
 
 
-__all__ = ['solve', 'johnsons_all_pairs_shortest_paths', 'NegativeCycleError']
-
-
-DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
+__all__ = ['NegativeCycleError', 'DistAndPred', 'solve', 
+           'johnsons_all_pairs_shortest_paths']
 
 
 NegativeCycleError = bellman_ford_sssp.NegativeCycleError
+
+
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
 
 
 def _add_supersource(graph, edge_weight_attr='weight'):

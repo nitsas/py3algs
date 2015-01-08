@@ -23,11 +23,8 @@ import collections
 import random
 
 
-__all__ = ['solve', 'bellman_ford_shortest_paths', 'NegativeCycleError', 
-           'has_negative_cycle']
-
-
-DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
+__all__ = ['NegativeCycleError', 'DistAndPred', 'solve', 
+           'bellman_ford_shortest_paths', 'has_negative_cycle']
 
 
 class NegativeCycleError(Exception):
@@ -39,6 +36,9 @@ class NegativeCycleError(Exception):
         if message is None:
             message = 'The graph contains a negative cycle!'
         self.message = message
+
+
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
 
 
 def _init(graph, source):

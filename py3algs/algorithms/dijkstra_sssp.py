@@ -28,7 +28,7 @@ import collections
 from ..datastructs import binary_heap
 
 
-__all__ = ['solve', 'dijkstra_shortest_paths']
+__all__ = ['DistAndPred', 'solve', 'dijkstra_shortest_paths']
 
 
 DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
