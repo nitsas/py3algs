@@ -24,7 +24,7 @@ import random
 
 
 __all__ = ['sort', 'quicksort', 'partition', 'choose_pivot_index',
-           'choose_random_pivot_index', 'choose_median_of_three_pivot_index']
+           'choose_pivot_index_random', 'choose_pivot_index_median_of_three']
 
 
 def quicksort(list_, begin=None, end=None):
@@ -130,7 +130,7 @@ def partition(list_, begin, end, index_p):
     return separator
 
 
-def choose_random_pivot_index(list_, begin, end):
+def choose_pivot_index_random(list_, begin, end):
     """
     Choose a pivot uniformly at random and return its index.
 
@@ -142,7 +142,7 @@ def choose_random_pivot_index(list_, begin, end):
     return random.randrange(begin, end)
 
 
-def choose_median_of_three_pivot_index(sequence, index_l, index_r):
+def choose_pivot_index_median_of_three(sequence, index_l, index_r):
     """
     Choose the pivot using the median-of-three rule and return its index. 
     
@@ -182,4 +182,4 @@ def choose_median_of_three_pivot_index(sequence, index_l, index_r):
             return index_m
 
 
-choose_pivot_index = choose_random_pivot_index
+choose_pivot_index = choose_pivot_index_random
