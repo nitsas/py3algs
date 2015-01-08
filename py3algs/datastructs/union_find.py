@@ -1,15 +1,16 @@
 """
 A simple Union-Find data structure implementation.
 
-author: 
-Christos Nitsas
-(chrisn654 or nitsas)
+Author: 
+    Christos Nitsas
+    (nitsas)
+    (chrisnitsas)
 
-language:
-Python 3(.4)
+Language:
+    Python 3(.4)
 
-date:
-July, 2014
+Date:
+    July, 2014
 """
 
 
@@ -117,7 +118,7 @@ class UnionFindUnionByRankAndPathCompression:
     """
     def __init__(self, items):
         """Initialize the Union-Find structure from an iterable."""
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def __getitem__(self, item):
         """
@@ -126,7 +127,7 @@ class UnionFindUnionByRankAndPathCompression:
         
         Equivalent to UnionFind.find().
         """
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     
     def find(self, item):
@@ -136,24 +137,24 @@ class UnionFindUnionByRankAndPathCompression:
         
         Equivalent to UnionFind.__getitem__().
         """
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def union(self, item_a, item_b):
         """
         Join together the two clusters that items item_a and item_b 
         belong to.
         """
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def joined(self, item_a, item_b):
         """
         Return True it the items belong to the same cluster; False otherwise.
         """
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def num_clusters(self):
         """Return the current number of clusters as an int."""
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def clusters(self):
         """
@@ -169,11 +170,11 @@ class UnionFindUnionByRankAndPathCompression:
         come, because some of the inner lists of the result will change or
         stop being valid after a union operation.
         """
-        raise(NotImplementedError)
+        raise NotImplementedError()
     
     def items(self):
         """Return a set containing all the items in the structure."""
-        raise(NotImplementedError)
+        raise NotImplementedError()
 
 
 _default_impl = UnionFindSimpleImpl
