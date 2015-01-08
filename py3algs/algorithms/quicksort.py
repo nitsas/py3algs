@@ -24,7 +24,7 @@ import random
 
 
 __all__ = ['sort', 'quicksort', 'partition', 'choose_pivot_index',
-           'choose_random_pivot_index']
+           'choose_random_pivot_index', 'choose_median_of_three_pivot_index']
 
 
 def quicksort(list_, begin=None, end=None):
@@ -140,6 +140,46 @@ def choose_random_pivot_index(list_, begin, end):
     end -- one past the index of the rightmost item we care about
     """
     return random.randrange(begin, end)
+
+
+def choose_median_of_three_pivot_index(sequence, index_l, index_r):
+    """
+    Choose the pivot using the median-of-three rule and return its index. 
+    
+    sequence -- the sequence of items to sort
+    index_l -- the index of the first of the items that we want to sort 
+    index_r -- the index just past the end of the items that we want to sort
+    """
+    # the first element:
+    item_l = sequence[index_l]
+    # the last element:
+    item_r = sequence[index_r - 1]
+    # the middle element:
+    if (index_r - index_l) % 2 == 0:
+        index_m = index_l + (index_r - index_l) // 2 - 1
+        item_m = sequence[index_m]
+    else:
+        index_m = index_l + (index_r - index_l) // 2 
+        item_m = sequence[index_m]
+    assert(index_l <= index_m <= index_r)
+    # find which of the three is the median element (i.e. the middle of the
+    # three when sorted):
+    min_ = min(item_l, item_m, item_r)
+    if min_ == item_l:
+        if max(item_m, item_r) == item_r:
+            return index_m
+        else:
+            return index_r - 1
+    elif min_ == item_m:
+        if max(item_l, item_r) == item_r:
+            return index_l
+        else:
+            return index_r - 1
+    else:
+        if max(item_l, item_m) == item_m:
+            return index_l
+        else:
+            return index_m
 
 
 choose_pivot_index = choose_random_pivot_index
