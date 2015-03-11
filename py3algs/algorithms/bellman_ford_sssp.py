@@ -23,8 +23,11 @@ import collections
 import random
 
 
-__all__ = ['NegativeCycleError', 'DistAndPred', 'solve', 
-           'bellman_ford_shortest_paths', 'has_negative_cycle']
+__all__ = ['solve', 'bellman_ford_shortest_paths', 'NegativeCycleError', 
+           'has_negative_cycle']
+
+
+DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
 
 
 class NegativeCycleError(Exception):
@@ -36,9 +39,6 @@ class NegativeCycleError(Exception):
         if message is None:
             message = 'The graph contains a negative cycle!'
         self.message = message
-
-
-DistAndPred = collections.namedtuple('DistAndPred', ['dist', 'pred'])
 
 
 def _init(graph, source):
@@ -90,7 +90,7 @@ def bellman_ford_shortest_paths(graph, source, weight='weight'):
     # (reachable from the source)
     for u, v, edge_attrs in graph.edges_iter(data=True):
         if dist[u] + edge_attrs[weight] < dist[v]:
-            raise(NegativeCycleError)
+            raise NegativeCycleError()
     return DistAndPred(dist, pred)
 
 
