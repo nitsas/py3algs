@@ -15,7 +15,7 @@ Example:
 Sort the list ['c', 'd', 'd', 'a', 'c', 'c', 'b', 'a', 'c', ... ] knowing that
 all elements have values in: ('a', 'b', 'c', 'd').
 
-If the length N of the list is: `N > 2^4` (i.e. `log(N) > 4`), counting sort
+If the length N of the list is: `N > 2**4` (i.e. `log(N) > 4`), counting sort
 will be faster than comparison-sorting algorithms (which have complexity of
 O(N * log(N)).
 
