@@ -9,7 +9,7 @@ Description:
   inversion a pair of indices i, j with i < j and L[i] > L[j], where L[i] is
   the ith item of the list and L[j] the jth one.
   
-  In a given list of size N there could be up to O(N^2) inversions. To do the
+  In a given list of size N there could be up to O(N**2) inversions. To do the
   counting efficiently (i.e. in O(N*log(N)) time) we use a divide and conquer 
   approach. More specifically, we piggyback on the mergesort algorithm.
 
