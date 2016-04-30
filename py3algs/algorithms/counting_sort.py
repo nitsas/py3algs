@@ -18,6 +18,17 @@ all elements have values in: ('a', 'b', 'c', 'd').
 If the length N of the list is: `N > 2^4` (i.e. `log(N) > 4`), counting sort
 will be faster than comparison-sorting algorithms (which have complexity of
 O(N * log(N)).
+
+Author:
+  Christos Nitsas
+  (nitsas)
+  (nitsas.chris)
+
+Language:
+  Python 3(.4)
+
+Date:
+  April, 2016
 """
 
 
