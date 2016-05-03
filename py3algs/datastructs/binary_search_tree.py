@@ -82,6 +82,27 @@ class BinarySearchTreeUsingNodes:
                 parent.right = Node(value)
         self._len += 1
     
+    def extend(self, sequence, no_shuffle=False):
+        """
+        Add all values from the given sequence.
+        
+        sequence -- a sequence of values
+        no_shuffle -- if falsey (default), shuffle (a copy of) the sequence
+                      before adding values from it; if truthy, don't shuffle
+        
+        If the given sequence is ordered we'd get a degenerate tree with height
+        as big as the sequence length. To counter this, we shuffle (a copy of)
+        the sequence before adding values from it. This behavior can be turned
+        off by passing `no_shuffle=True`.
+        """
+        
+        if not no_shuffle:
+            from random import shuffle
+            sequence = list(sequence)
+            shuffle(sequence)
+        for value in sequence:
+            self.insert(value)
+    
     def find(self, value):
         """
         Find a node with the given value (the shallowest one), if one exists.
