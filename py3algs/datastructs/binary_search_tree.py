@@ -46,9 +46,27 @@ class BinarySearchTreeUsingNodes:
     both the left and the right child is None.
     """
     
-    def __init__(self):
+    def __init__(self, sequence=None, no_shuffle=False):
+        """
+        Initialize the tree.
+        
+        sequence -- a sequence of values to put in the tree initially
+        no_shuffle -- if falsey, shuffle (a copy of) the sequence before adding
+                      values from it; if truthy, don't shuffle
+        
+        If a sequence was given, initialize the tree with values from it.
+        Otherwise the tree will be empty.
+        
+        If the given sequence is ordered we'd get a degenerate tree with height
+        as big as the sequence length. To counter this, we shuffle (a copy of)
+        the sequence before adding values from it. This behavior can be turned
+        off by passing `no_shuffle=True`.
+        """
+        
         self._root = None
         self._len = 0
+        if sequence is not None:
+            self.extend(sequence, no_shuffle)
     
     def __len__(self):
         return self._len
